@@ -35,17 +35,10 @@ from svrm.predictor import MV23DPredictor
 
 
 class Views2Mesh():
-    def __init__(self, mv23d_cfg_path, mv23d_ckt_path, device="cuda:0", use_lite=False):
-        '''
-            mv23d_cfg_path: config yaml file 
-            mv23d_ckt_path: path to ckpt
-            use_lite: 
-        '''
-        self.mv23d_predictor = MV23DPredictor(mv23d_ckt_path, mv23d_cfg_path, device=device)  
-        self.mv23d_predictor.model.eval()
-        self.order = [0, 1, 2, 3, 4, 5] if use_lite else [0, 2, 4, 5, 3, 1]
-        set_parameter_grad_false(self.mv23d_predictor.model)
-        print('view2mesh model', get_parameter_number(self.mv23d_predictor.model))
+    def __init__(self, pipeline_config):
+        self.mv23d_predictor = pipeline_config.get_pipeline_config()['predictor']
+        self.order = pipeline_config.get_pipeline_config()['order']
+
 
     @torch.no_grad()
     @timing_decorator("views to mesh")

@@ -20,12 +20,35 @@
 # fine-tuning enabling code and other elements of the foregoing made publicly available 
 # by Tencent in accordance with TENCENT HUNYUAN COMMUNITY LICENSE AGREEMENT.
 
+import torch
 from .utils import seed_everything, timing_decorator, auto_amp_inference
-from .rembg import Removebg
-from .text_to_image import Text2Image
-from .text_to_image_pipeline_load import Text2ImagePipelineLoad
-from .image_to_views import Image2Views, save_gif
-from .image_to_views_pipeline_load import Image2ViewsPipelineLoad
-from .views_to_mesh import Views2Mesh
-from .views_to_mesh_pipeline_load import Views2MeshPipelineLoad
-from .gif_render import GifRenderer
+from .utils import get_parameter_number, set_parameter_grad_false
+from diffusers import HunyuanDiTPipeline, AutoPipelineForText2Image
+
+class Text2ImagePipelineLoad():
+    def __init__(self, pretrain="weights/hunyuanDiT", device="cuda:0", save_memory=False):
+        self.save_memory = save_memory
+        self.device = device
+        self.pipe = AutoPipelineForText2Image.from_pretrained(
+            pretrain,
+            torch_dtype=torch.float16,
+            enable_pag=True,
+            pag_applied_layers=["blocks.(16|17|18|19)"]
+        )
+        set_parameter_grad_false(self.pipe.transformer)
+        print('text2image transformer model', get_parameter_number(self.pipe.transformer))
+
+        if not save_memory:
+            self.pipe = self.pipe.to(device)
+
+        self.neg_txt = "文本,特写,裁剪,出框,最差质量,低质量,JPEG伪影,PGLY,重复,病态,残缺,多余的手指,变异的手," \
+                       "画得不好的手,画得不好的脸,变异,畸形,模糊,脱水,糟糕的解剖学,糟糕的比例,多余的肢体,克隆的脸," \
+                       "毁容,恶心的比例,畸形的肢体,缺失的手臂,缺失的腿,额外的手臂,额外的腿,融合的手指,手指太多,长脖子"
+
+    def get_pipeline_config(self):
+        return {
+            'pipe': self.pipe,
+            'device': self.device,
+            'save_memory': self.save_memory,
+            'neg_txt': self.neg_txt
+        }

@@ -26,25 +26,16 @@ from .utils import get_parameter_number, set_parameter_grad_false
 from diffusers import HunyuanDiTPipeline, AutoPipelineForText2Image
 
 class Text2Image():
-    def __init__(self, pretrain="weights/hunyuanDiT", device="cuda:0", save_memory=False):
+    def __init__(self, pipeline_config):
         '''
-            save_memory: if GPU memory is low, can set it
+        接收pipeline配置初始化Text2Image
+        Args:
+            pipeline_config: 从Text2ImagePipelineLoad获取的配置字典
         '''
-        self.save_memory = save_memory
-        self.device = device
-        self.pipe = AutoPipelineForText2Image.from_pretrained(
-            pretrain, 
-            torch_dtype = torch.float16, 
-            enable_pag = True, 
-            pag_applied_layers = ["blocks.(16|17|18|19)"]
-        )
-        set_parameter_grad_false(self.pipe.transformer)
-        print('text2image transformer model', get_parameter_number(self.pipe.transformer))
-        if not save_memory: 
-            self.pipe = self.pipe.to(device)
-        self.neg_txt = "文本,特写,裁剪,出框,最差质量,低质量,JPEG伪影,PGLY,重复,病态,残缺,多余的手指,变异的手," \
-                       "画得不好的手,画得不好的脸,变异,畸形,模糊,脱水,糟糕的解剖学,糟糕的比例,多余的肢体,克隆的脸," \
-                       "毁容,恶心的比例,畸形的肢体,缺失的手臂,缺失的腿,额外的手臂,额外的腿,融合的手指,手指太多,长脖子"
+        self.pipe = pipeline_config.get_pipeline_config()['pipe']
+        self.device = pipeline_config.get_pipeline_config()['device']
+        self.save_memory = pipeline_config.get_pipeline_config()['save_memory']
+        self.neg_txt = pipeline_config.get_pipeline_config()['neg_txt']
 
     @torch.no_grad()
     @timing_decorator('text to image')

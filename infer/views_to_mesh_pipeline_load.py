@@ -20,12 +20,35 @@
 # fine-tuning enabling code and other elements of the foregoing made publicly available 
 # by Tencent in accordance with TENCENT HUNYUAN COMMUNITY LICENSE AGREEMENT.
 
+import os
+import time
+import torch
+import random
+import numpy as np
+from PIL import Image
+from einops import rearrange
+from PIL import Image, ImageSequence
+
 from .utils import seed_everything, timing_decorator, auto_amp_inference
-from .rembg import Removebg
-from .text_to_image import Text2Image
-from .text_to_image_pipeline_load import Text2ImagePipelineLoad
-from .image_to_views import Image2Views, save_gif
-from .image_to_views_pipeline_load import Image2ViewsPipelineLoad
-from .views_to_mesh import Views2Mesh
-from .views_to_mesh_pipeline_load import Views2MeshPipelineLoad
-from .gif_render import GifRenderer
+from .utils import get_parameter_number, set_parameter_grad_false
+from svrm.predictor import MV23DPredictor
+
+
+class Views2MeshPipelineLoad():
+    def __init__(self, mv23d_cfg_path, mv23d_ckt_path, device="cuda:0", use_lite=False):
+        '''
+            mv23d_cfg_path: config yaml file 
+            mv23d_ckt_path: path to ckpt
+            use_lite: 
+        '''
+        self.mv23d_predictor = MV23DPredictor(mv23d_ckt_path, mv23d_cfg_path, device=device)  
+        self.mv23d_predictor.model.eval()
+        self.order = [0, 1, 2, 3, 4, 5] if use_lite else [0, 2, 4, 5, 3, 1]
+        set_parameter_grad_false(self.mv23d_predictor.model)
+        print('view2mesh model', get_parameter_number(self.mv23d_predictor.model))
+
+    def get_pipeline_config(self):
+        return {
+            'predictor': self.mv23d_predictor,
+            'order': self.order
+        }

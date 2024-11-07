@@ -41,38 +41,38 @@ comfy_path = os.path.dirname(folder_paths.__file__)
 
 hunyuan3d_path = f'{comfy_path}/custom_nodes/ComfyUI-Hunyuan3D-1-wrapper'
 
-def save_gif(pils, save_path, df=False):
-    # save a list of PIL.Image to gif
-    spf = 4000 / len(pils)
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)
-    pils[0].save(save_path, format="GIF", save_all=True, append_images=pils[1:], duration=spf, loop=0)
-    return save_path
-    
-
-class Image2Views():
-    def __init__(self, pipeline_config):
+class Image2ViewsPipelineLoad():
+    def __init__(self, device="cuda:0", use_lite=False):
         """
-        接收pipeline配置初始化Image2Views
+        初始化并加载图像转视图的模型管道
         Args:
-            pipeline_config: 从ImageToViewsPipelineLoad获取的配置字典
+            device: 设备类型
+            use_lite: 是否使用轻量版模型
         """
-        self.pipe = pipeline_config.get_pipeline_config()['pipe']
-        self.device = pipeline_config.get_pipeline_config()['device']
-        self.order = pipeline_config.get_pipeline_config()['order']
-        
-    @torch.no_grad()
-    @timing_decorator("image to views")
-    @auto_amp_inference
-    def __call__(self, pil_img, seed=0, steps=50, guidance_scale=2.0, guidance_curve=lambda t:2.0):
-        seed_everything(seed)
-        generator = torch.Generator(device=self.device)
-        res_img = self.pipe(pil_img, 
-                            num_inference_steps=steps,
-                            guidance_scale=guidance_scale, 
-                            guidance_curve=guidance_curve, 
-                            generat=generator).images
-        show_image = rearrange(np.asarray(res_img[0], dtype=np.uint8), '(n h) (m w) c -> (n m) h w c', n=3, m=2)
-        pils = [res_img[1]]+[Image.fromarray(show_image[idx]) for idx in self.order] 
-        torch.cuda.empty_cache()
-        return res_img, pils
+        self.device = device
+        if use_lite:
+            self.pipe = Hunyuan3d_MVD_Lite_Pipeline.from_pretrained(
+                f'{hunyuan3d_path}/weights/mvd_lite',
+                torch_dtype=torch.float16,
+                use_safetensors=True,
+            )
+        else:
+            self.pipe = HunYuan3D_MVD_Std_Pipeline.from_pretrained(
+                f'{hunyuan3d_path}/weights/mvd_std',
+                torch_dtype=torch.float16,
+                use_safetensors=True,
+            )
+
+        self.pipe = self.pipe.to(device)
+        self.order = [0, 1, 2, 3, 4, 5] if use_lite else [0, 2, 4, 5, 3, 1]
+        set_parameter_grad_false(self.pipe.unet)
+        print('image2views unet model', get_parameter_number(self.pipe.unet))
+
+    def get_pipeline_config(self):
+        """返回管道配置"""
+        return {
+            'pipe': self.pipe,
+            'device': self.device,
+            'order': self.order
+        }
         
