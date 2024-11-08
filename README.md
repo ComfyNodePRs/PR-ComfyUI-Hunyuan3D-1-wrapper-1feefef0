@@ -96,7 +96,7 @@ and
 # Workflow
 Here I provide two workflows:
 - Text to 3D [example-text2mesh](workflow/example-text2mesh.json)
-- Image to 3D [example-text2mesh](workflow/example-image2mesh.json)
+- Image to 3D [example-image2mesh](workflow/example-image2mesh.json)
 
 Please understand the node usage in conjunction with the workflows.
 

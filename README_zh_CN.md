@@ -96,7 +96,7 @@ Pytorch3D是安装过程中的一大困难，无论是3D Pack还是本节点，�
 # Workflow
 这里我提供两个工作流：
 - 文生3D [example-text2mesh](workflow/example-text2mesh.json)
-- 图生3D [example-text2mesh](workflow/example-image2mesh.json)
+- 图生3D [example-image2mesh](workflow/example-image2mesh.json)
 
 具体节点的使用请配合工作流理解。
 
