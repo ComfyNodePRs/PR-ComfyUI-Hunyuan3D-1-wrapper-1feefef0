@@ -1,0 +1,387 @@
+{
+  "last_node_id": 22,
+  "last_link_id": 28,
+  "nodes": [
+    {
+      "id": 19,
+      "type": "PreviewImage",
+      "pos": {
+        "0": 1907,
+        "1": 211
+      },
+      "size": {
+        "0": 210,
+        "1": 246
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 20
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 21,
+      "type": "Hunyuan3D V1 - Image Loader",
+      "pos": {
+        "0": 724,
+        "1": 197
+      },
+      "size": {
+        "0": 340.20001220703125,
+        "1": 46
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "Hunyuan3D1Image",
+          "links": [
+            23
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "config",
+          "type": "Hunyuan3D1Config",
+          "links": [
+            26
+          ],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Image Loader"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 15,
+      "type": "Hunyuan3D V1 - Image2Views",
+      "pos": {
+        "0": 1120,
+        "1": 197
+      },
+      "size": {
+        "0": 327.5999755859375,
+        "1": 146
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "input",
+          "type": "Hunyuan3D1Image",
+          "link": 23
+        },
+        {
+          "name": "config",
+          "type": "Hunyuan3D1Config",
+          "link": 26
+        },
+        {
+          "name": "pipeline_config",
+          "type": "Hunyuan3D1Image2ViewsPipelineConfig",
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "views_grid_pil",
+          "type": "Hunyuan3D1ViewGridPil",
+          "links": [
+            17
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "cond_img",
+          "type": "Hunyuan3D1CondImage",
+          "links": [
+            18
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "config",
+          "type": "Hunyuan3D1Config",
+          "links": [
+            28
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Image2Views"
+      },
+      "widgets_values": [
+        2039338523,
+        "randomize",
+        50
+      ]
+    },
+    {
+      "id": 22,
+      "type": "LoadImage",
+      "pos": {
+        "0": 318,
+        "1": 103
+      },
+      "size": {
+        "0": 315,
+        "1": 314
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            24
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "example_001.png",
+        "image"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "Hunyuan3D V1 - Views2Mesh",
+      "pos": {
+        "0": 1517,
+        "1": 244
+      },
+      "size": {
+        "0": 315,
+        "1": 214
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "views_grid_pil",
+          "type": "Hunyuan3D1ViewGridPil",
+          "link": 17
+        },
+        {
+          "name": "cond_img",
+          "type": "Hunyuan3D1CondImage",
+          "link": 18
+        },
+        {
+          "name": "config",
+          "type": "Hunyuan3D1Config",
+          "link": 28
+        },
+        {
+          "name": "pipeline_config",
+          "type": "Hunyuan3D1Views2MeshPipelineConfig",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "preview",
+          "type": "IMAGE",
+          "links": [
+            20
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Views2Mesh"
+      },
+      "widgets_values": [
+        169649451,
+        "randomize",
+        90000,
+        false,
+        false
+      ]
+    },
+    {
+      "id": 16,
+      "type": "Hunyuan3D V1 - Image2Views Pipeline Load",
+      "pos": {
+        "0": 708,
+        "1": 363
+      },
+      "size": {
+        "0": 336,
+        "1": 58
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "pipeline_config",
+          "type": "Hunyuan3D1Image2ViewsPipelineConfig",
+          "links": [
+            25
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Image2Views Pipeline Load"
+      },
+      "widgets_values": [
+        false
+      ]
+    },
+    {
+      "id": 18,
+      "type": "Hunyuan3D V1 - Views2Mesh Pipeline Load",
+      "pos": {
+        "0": 1126,
+        "1": 419
+      },
+      "size": {
+        "0": 327.6000061035156,
+        "1": 58.5
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "pipeline_config",
+          "type": "Hunyuan3D1Views2MeshPipelineConfig",
+          "links": [
+            27
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Views2Mesh Pipeline Load"
+      },
+      "widgets_values": [
+        false
+      ]
+    }
+  ],
+  "links": [
+    [
+      17,
+      15,
+      0,
+      17,
+      0,
+      "Hunyuan3D1ViewGridPil"
+    ],
+    [
+      18,
+      15,
+      1,
+      17,
+      1,
+      "Hunyuan3D1CondImage"
+    ],
+    [
+      20,
+      17,
+      0,
+      19,
+      0,
+      "IMAGE"
+    ],
+    [
+      23,
+      21,
+      0,
+      15,
+      0,
+      "Hunyuan3D1Image"
+    ],
+    [
+      24,
+      22,
+      0,
+      21,
+      0,
+      "IMAGE"
+    ],
+    [
+      25,
+      16,
+      0,
+      15,
+      2,
+      "Hunyuan3D1Image2ViewsPipelineConfig"
+    ],
+    [
+      26,
+      21,
+      1,
+      15,
+      1,
+      "Hunyuan3D1Config"
+    ],
+    [
+      27,
+      18,
+      0,
+      17,
+      3,
+      "Hunyuan3D1Views2MeshPipelineConfig"
+    ],
+    [
+      28,
+      15,
+      2,
+      17,
+      2,
+      "Hunyuan3D1Config"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1,
+      "offset": [
+        -310.7758309479598,
+        81.47061210424016
+      ]
+    }
+  },
+  "version": 0.4
+}

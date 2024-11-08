@@ -29,6 +29,8 @@ from .infer import Text2Image, Text2ImagePipelineLoad, Image2Views, Image2ViewsP
 
 from PIL import Image
 import numpy as np
+import time
+from datetime import datetime
 
 class Hunyuan3D1Text2ImagePipelineLoad:
     def __init__(self):
@@ -122,8 +124,8 @@ class Hunyuan3D1ImageLoader:
             },
         }
 
-    RETURN_TYPES = ("Hunyuan3D1Image",)
-    RETURN_NAMES = ("output",)
+    RETURN_TYPES = ("Hunyuan3D1Image", "Hunyuan3D1Config",)
+    RETURN_NAMES = ("output", "config",)
 
     FUNCTION = "run"
 
@@ -138,9 +140,19 @@ class Hunyuan3D1ImageLoader:
 
         res_rgba_pil = rembg_model(res_rgb_pil)
 
-        res_rgb_pil.save(os.path.join(output_path, "img_nobg.png"))
+        generate_folder = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        return res_rgba_pil,
+        folder_path = os.path.join(output_path, generate_folder)
+
+        os.makedirs(folder_path, exist_ok=True)
+
+        res_rgb_pil.save(os.path.join(folder_path, "img_nobg.png"))
+
+        config = {
+            "generate_folder": generate_folder,
+        }
+
+        return res_rgba_pil, config,
 
 class Hunyuan3D1Text2Image:
     def __init__(self):
@@ -159,8 +171,8 @@ class Hunyuan3D1Text2Image:
             },
         }
 
-    RETURN_TYPES = ("Hunyuan3D1Image",)
-    RETURN_NAMES = ("output",)
+    RETURN_TYPES = ("Hunyuan3D1Image", "Hunyuan3D1Config",)
+    RETURN_NAMES = ("output", "config",)
 
     FUNCTION = "run"
 
@@ -175,15 +187,25 @@ class Hunyuan3D1Text2Image:
             steps=steps
         )
 
-        res_rgb_pil.save(os.path.join(output_path, "img.jpg"))
+        generate_folder = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        folder_path = os.path.join(output_path, generate_folder)
+
+        os.makedirs(folder_path, exist_ok=True)
+
+        res_rgb_pil.save(os.path.join(folder_path, "img.jpg"))
 
         rembg_model = Removebg()
 
         res_rgba_pil = rembg_model(res_rgb_pil)
 
-        res_rgb_pil.save(os.path.join(output_path, "img_nobg.png"))
+        res_rgb_pil.save(os.path.join(folder_path, "img_nobg.png"))
 
-        return res_rgba_pil,
+        config = {
+            "generate_folder": generate_folder,
+        }
+
+        return res_rgba_pil, config,
 
 
 class Hunyuan3D1Image2Views:
@@ -195,6 +217,7 @@ class Hunyuan3D1Image2Views:
         return {
             "required": {
                 "input": ("Hunyuan3D1Image",),
+                "config": ("Hunyuan3D1Config",),
                 "pipeline_config": ("Hunyuan3D1Image2ViewsPipelineConfig",),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffff,
                                  "tooltip": "The random seed used for creating the noise."}),
@@ -203,14 +226,14 @@ class Hunyuan3D1Image2Views:
             }
         }
 
-    RETURN_TYPES = ("Hunyuan3D1ViewGridPil", "Hunyuan3D1CondImage",)
-    RETURN_NAMES = ("views_grid_pil", "cond_img",)
+    RETURN_TYPES = ("Hunyuan3D1ViewGridPil", "Hunyuan3D1CondImage", "Hunyuan3D1Config",)
+    RETURN_NAMES = ("views_grid_pil", "cond_img", "config",)
 
     FUNCTION = "run"
 
     CATEGORY = "Hunyuan3D"
 
-    def run(self, input, pipeline_config, seed, steps):
+    def run(self, input, config, pipeline_config, seed, steps):
         image_to_views_model = Image2Views(pipeline_config)
 
         (views_grid_pil, cond_img), view_pil_list = image_to_views_model(
@@ -219,9 +242,15 @@ class Hunyuan3D1Image2Views:
             steps=steps
         )
 
-        views_grid_pil.save(os.path.join(output_path, "views.jpg"))
+        generate_folder = config["generate_folder"]
 
-        return views_grid_pil, cond_img,
+        folder_path = os.path.join(output_path, generate_folder)
+
+        os.makedirs(folder_path, exist_ok=True)
+
+        views_grid_pil.save(os.path.join(folder_path, "views.jpg"))
+
+        return views_grid_pil, cond_img, config,
 
 
 class Hunyuan3D1Views2Mesh:
@@ -234,12 +263,13 @@ class Hunyuan3D1Views2Mesh:
             "required": {
                 "views_grid_pil": ("Hunyuan3D1ViewGridPil",),
                 "cond_img": ("Hunyuan3D1CondImage",),
+                "config": ("Hunyuan3D1Config",),
                 "pipeline_config": ("Hunyuan3D1Views2MeshPipelineConfig",),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffff,
                                  "tooltip": "The random seed used for creating the noise."}),
-                "target_face_count": ("INT", {"default": 90000, "min": 10000, "max": 100000}),
-                #"do_texture_mapping": ([True, False],), disable for now
-                #"do_render": ([True, False],), disable for now
+                "target_face_count": ("INT", {"default": 90000, "min": 10000, "max": 500000}),
+                "do_texture_mapping": ([True, False],),
+                "do_render": ([True, False],),
             }
         }
 
@@ -250,28 +280,36 @@ class Hunyuan3D1Views2Mesh:
 
     CATEGORY = "Hunyuan3D"
 
-    def run(self, views_grid_pil, cond_img, pipeline_config, seed, target_face_count):
+    def run(self, views_grid_pil, cond_img, config, pipeline_config, seed, target_face_count, do_texture_mapping, do_render):
         views_to_mesh_model = Views2Mesh(pipeline_config)
+
+        generate_folder = config["generate_folder"]
+
+        folder_path = os.path.join(output_path, generate_folder)
+
+        os.makedirs(folder_path, exist_ok=True)
 
         views_to_mesh_model(
             views_grid_pil,
             cond_img,
             seed=seed,
             target_face_count=target_face_count,
-            save_folder=output_path,
-            do_texture_mapping=False # disable texture mapping for now
+            save_folder=folder_path,
+            do_texture_mapping=do_texture_mapping # disable texture mapping for now
         )
 
-        # if do_render: #disable for now
-        if False:
+        if do_render:
             gif_renderer = GifRenderer()
 
             gif_renderer(
-                os.path.join(output_path, 'mesh.obj'),
-                gif_dst_path=os.path.join(output_path, 'output.gif'),
+                os.path.join(folder_path, 'mesh.obj'),
+                gif_dst_path=os.path.join(folder_path, 'output.gif'),
             )
 
-        return views_grid_pil,
+        image = np.array(views_grid_pil).astype(np.float32) / 255.0
+        image = torch.from_numpy(image)[None,]
+
+        return image,
 
 
 NODE_CLASS_MAPPINGS = {
