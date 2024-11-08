@@ -1,0 +1,713 @@
+{
+  "last_node_id": 22,
+  "last_link_id": 33,
+  "nodes": [
+    {
+      "id": 4,
+      "type": "CheckpointLoaderSimple",
+      "pos": {
+        "0": 96,
+        "1": 0
+      },
+      "size": {
+        "0": 315,
+        "1": 98
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            3,
+            5
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            8
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "hunyuan_dit_1.2.safetensors"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "EmptyLatentImage",
+      "pos": {
+        "0": 528,
+        "1": 480
+      },
+      "size": {
+        "0": 315,
+        "1": 106
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            2
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "type": "KSampler",
+      "pos": {
+        "0": 864,
+        "1": 0
+      },
+      "size": {
+        "0": 315,
+        "1": 262
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 12
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 6
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            24
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        356020456528527,
+        "randomize",
+        30,
+        6,
+        "euler",
+        "sgm_uniform",
+        1
+      ]
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": {
+        "0": 432,
+        "1": 240
+      },
+      "size": {
+        "0": 425.27801513671875,
+        "1": 180.6060791015625
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            6
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "CLIP Text Encode (Negative Prompt)",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "文本,特写,裁剪,出框,最差质量,低质量,JPEG伪影,PGLY,重复,病态,残缺,多余的手指,变异的手, 画得不好的手,画得不好的脸,变异,畸形,模糊,脱水,糟糕的解剖学,糟糕的比例,多余的肢体,克隆的脸, 毁容,恶心的比例,畸形的肢体,缺失的手臂,缺失的腿,额外的手臂,额外的腿,融合的手指,手指太多,长脖子"
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": {
+        "0": 432,
+        "1": 0
+      },
+      "size": {
+        "0": 416.168212890625,
+        "1": 162.9626922607422
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            12
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "CLIP Text Encode (Positive Prompt)",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "一片绿色的树叶在白色背景上居中展现，清晰的纹理,白色背景,3D风格,最佳质量\n"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": {
+        "0": 1200,
+        "1": 0
+      },
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 24
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            9,
+            25
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 9,
+      "type": "SaveImage",
+      "pos": {
+        "0": 1541,
+        "1": -427
+      },
+      "size": {
+        "0": 569.7950439453125,
+        "1": 617.7257080078125
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 9
+        }
+      ],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "Hunyuan3D V1 - Image Loader",
+      "pos": {
+        "0": 1220,
+        "1": 323
+      },
+      "size": {
+        "0": 340.20001220703125,
+        "1": 46
+      },
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "Hunyuan3D1Image",
+          "links": [
+            26
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "config",
+          "type": "Hunyuan3D1Config",
+          "links": [
+            27
+          ],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Image Loader"
+      }
+    },
+    {
+      "id": 18,
+      "type": "Hunyuan3D V1 - Image2Views",
+      "pos": {
+        "0": 1638,
+        "1": 322
+      },
+      "size": {
+        "0": 380.4000244140625,
+        "1": 146
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "input",
+          "type": "Hunyuan3D1Image",
+          "link": 26
+        },
+        {
+          "name": "config",
+          "type": "Hunyuan3D1Config",
+          "link": 27
+        },
+        {
+          "name": "pipeline_config",
+          "type": "Hunyuan3D1Image2ViewsPipelineConfig",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "views_grid_pil",
+          "type": "Hunyuan3D1ViewGridPil",
+          "links": [
+            29
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "cond_img",
+          "type": "Hunyuan3D1CondImage",
+          "links": [
+            30
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "config",
+          "type": "Hunyuan3D1Config",
+          "links": [
+            31
+          ],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Image2Views"
+      },
+      "widgets_values": [
+        913147892,
+        "randomize",
+        50
+      ]
+    },
+    {
+      "id": 20,
+      "type": "Hunyuan3D V1 - Views2Mesh",
+      "pos": {
+        "0": 2062.276611328125,
+        "1": 334.9023132324219
+      },
+      "size": {
+        "0": 315,
+        "1": 214
+      },
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "views_grid_pil",
+          "type": "Hunyuan3D1ViewGridPil",
+          "link": 29
+        },
+        {
+          "name": "cond_img",
+          "type": "Hunyuan3D1CondImage",
+          "link": 30
+        },
+        {
+          "name": "config",
+          "type": "Hunyuan3D1Config",
+          "link": 31
+        },
+        {
+          "name": "pipeline_config",
+          "type": "Hunyuan3D1Views2MeshPipelineConfig",
+          "link": 32
+        }
+      ],
+      "outputs": [
+        {
+          "name": "preview",
+          "type": "IMAGE",
+          "links": [
+            33
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Views2Mesh"
+      },
+      "widgets_values": [
+        2143413810,
+        "randomize",
+        90000,
+        true,
+        true
+      ]
+    },
+    {
+      "id": 22,
+      "type": "PreviewImage",
+      "pos": {
+        "0": 2481.814453125,
+        "1": 337.31805419921875
+      },
+      "size": [
+        210,
+        246
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 33
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 21,
+      "type": "Hunyuan3D V1 - Views2Mesh Pipeline Load",
+      "pos": {
+        "0": 1666,
+        "1": 619
+      },
+      "size": [
+        327.6000061035156,
+        58
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "pipeline_config",
+          "type": "Hunyuan3D1Views2MeshPipelineConfig",
+          "links": [
+            32
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Views2Mesh Pipeline Load"
+      },
+      "widgets_values": [
+        false
+      ]
+    },
+    {
+      "id": 19,
+      "type": "Hunyuan3D V1 - Image2Views Pipeline Load",
+      "pos": {
+        "0": 1223,
+        "1": 453
+      },
+      "size": [
+        336,
+        58
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "pipeline_config",
+          "type": "Hunyuan3D1Image2ViewsPipelineConfig",
+          "links": [
+            28
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Hunyuan3D V1 - Image2Views Pipeline Load"
+      },
+      "widgets_values": [
+        false
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      4,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      5,
+      0,
+      3,
+      3,
+      "LATENT"
+    ],
+    [
+      3,
+      4,
+      1,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
+      5,
+      4,
+      1,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
+      6,
+      7,
+      0,
+      3,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      8,
+      4,
+      2,
+      8,
+      1,
+      "VAE"
+    ],
+    [
+      9,
+      8,
+      0,
+      9,
+      0,
+      "IMAGE"
+    ],
+    [
+      12,
+      6,
+      0,
+      3,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      24,
+      3,
+      0,
+      8,
+      0,
+      "LATENT"
+    ],
+    [
+      25,
+      8,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ],
+    [
+      26,
+      17,
+      0,
+      18,
+      0,
+      "Hunyuan3D1Image"
+    ],
+    [
+      27,
+      17,
+      1,
+      18,
+      1,
+      "Hunyuan3D1Config"
+    ],
+    [
+      28,
+      19,
+      0,
+      18,
+      2,
+      "Hunyuan3D1Image2ViewsPipelineConfig"
+    ],
+    [
+      29,
+      18,
+      0,
+      20,
+      0,
+      "Hunyuan3D1ViewGridPil"
+    ],
+    [
+      30,
+      18,
+      1,
+      20,
+      1,
+      "Hunyuan3D1CondImage"
+    ],
+    [
+      31,
+      18,
+      2,
+      20,
+      2,
+      "Hunyuan3D1Config"
+    ],
+    [
+      32,
+      21,
+      0,
+      20,
+      3,
+      "Hunyuan3D1Views2MeshPipelineConfig"
+    ],
+    [
+      33,
+      20,
+      0,
+      22,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.6209213230591552,
+      "offset": [
+        -27.397248653378895,
+        461.4143672492705
+      ]
+    }
+  },
+  "version": 0.4
+}

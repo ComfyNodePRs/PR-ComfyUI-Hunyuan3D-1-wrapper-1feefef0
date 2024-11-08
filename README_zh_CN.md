@@ -88,13 +88,18 @@ Pytorch3D是安装过程中的一大困难，无论是3D Pack还是本节点，�
 3. 在此节点的目录中运行：  
 `huggingface-cli download tencent/Hunyuan3D-1 --local-dir ./weights`  
 和  
-`huggingface-cli download Tencent-Hunyuan/HunyuanDiT-v1.1-Diffusers-Distilled --local-dir ./weights/hunyuanDiT`
+`huggingface-cli download Tencent-Hunyuan/HunyuanDiT-v1.1-Diffusers-Distilled --local-dir ./weights/hunyuanDiT`  
+或者，因为ComfyUI原生支持HunyuanDit，你可以从[这个](https://huggingface.co/comfyanonymous/hunyuan_dit_comfyui/blob/main/hunyuan_dit_1.2.safetensors)下载它的checkpoint，并把它放在**ComfyUI/models/checkpoints**文件夹中
 
 # Runtime
 1. 输出路径在 **ComfyUI/output/Unique3D/Hunyuan3D-1/**
 
 # Workflow
-这里我提供两个工作流：
+这里我提供三个工作流：
+- 文生3D - native [example-text2mesh-native](workflow/example-text2mesh-native.json)
+对于这个工作流:
+1. 保留负提示词
+2. 保留最后三个正提示词 (**,白色背景,3D风格,最佳质量**) 然后把你自己的提示词加到它们前面, 例如： **a lovely rabbit eating carrots, 白色背景,3D风格,最佳质量**
 - 文生3D [example-text2mesh](workflow/example-text2mesh.json)
 - 图生3D [example-image2mesh](workflow/example-image2mesh.json)
 
