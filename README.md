@@ -98,8 +98,9 @@ and
 Here I provide three workflows:
 - Text to 3D - native [example-text2mesh-native](workflow/example-text2mesh-native.json)
 for this workflow:
-1. keep the negative prompt
-2. keep the last three prompts **,白色背景,3D风格,最佳质量** and add your own prompts before them, for example：**a lovely rabbit eating carrots, 白色背景,3D风格,最佳质量**
+1. make sure download hunyuanDit checkpoint and put it into checkpoints folder.
+2. keep the negative prompt
+3. keep the last three prompts **,白色背景,3D风格,最佳质量** and add your own prompts before them, for example：**a lovely rabbit eating carrots, 白色背景,3D风格,最佳质量**
 - Text to 3D [example-text2mesh](workflow/example-text2mesh.json)
 - Image to 3D [example-image2mesh](workflow/example-image2mesh.json)
 
@@ -107,7 +108,7 @@ Please understand the node usage in conjunction with the workflows.
 
 # Known issue
 Sometimes, ComfyUI will throw the error of **torch.OutOfMemoryError: Allocation on device** randomly while generating mesh.![img_2.png](img_2.png) 
-However, if I run it again several times, then it could generate successfully 
+However, if I run it again several times, then it could generate successfully. You can fix the seed to save time.
 
 ## Credit
 - [Tencent/Hunyuan3D-1](https://github.com/Tencent/Hunyuan3D-1) - A Unified Framework for Text-to-3D and Image-to-3D Generation

@@ -98,12 +98,17 @@ Pytorch3D是安装过程中的一大困难，无论是3D Pack还是本节点，�
 这里我提供三个工作流：
 - 文生3D - native [example-text2mesh-native](workflow/example-text2mesh-native.json)
 对于这个工作流:
-1. 保留负提示词
-2. 保留最后三个正提示词 (**,白色背景,3D风格,最佳质量**) 然后把你自己的提示词加到它们前面, 例如： **a lovely rabbit eating carrots, 白色背景,3D风格,最佳质量**
+1. 确保下载了HunyuanDit的checkpoint并放在checkpoints文件夹中
+2. 保留负提示词
+3. 保留最后三个正提示词 (**,白色背景,3D风格,最佳质量**) 然后把你自己的提示词加到它们前面, 例如： **a lovely rabbit eating carrots, 白色背景,3D风格,最佳质量**
 - 文生3D [example-text2mesh](workflow/example-text2mesh.json)
 - 图生3D [example-image2mesh](workflow/example-image2mesh.json)
 
 具体节点的使用请配合工作流理解。
+
+# 已知问题
+有时在生成Mesh的阶段可能会报错**torch.OutOfMemoryError: Allocation on device**![img_2.png](img_2.png) 
+但是如果重新运行几次的话，就有可能生成成功。如果遇到这种情况，可以使用固定的seed节省时间。
 
 ## Credit
 - [Tencent/Hunyuan3D-1](https://github.com/Tencent/Hunyuan3D-1) - A Unified Framework for Text-to-3D and Image-to-3D Generation
