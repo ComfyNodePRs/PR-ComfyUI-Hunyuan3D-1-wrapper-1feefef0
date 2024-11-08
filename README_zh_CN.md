@@ -89,7 +89,7 @@ Pytorch3D是安装过程中的一大困难，无论是3D Pack还是本节点，�
 `huggingface-cli download tencent/Hunyuan3D-1 --local-dir ./weights`  
 和  
 `huggingface-cli download Tencent-Hunyuan/HunyuanDiT-v1.1-Diffusers-Distilled --local-dir ./weights/hunyuanDiT`  
-或者，因为ComfyUI原生支持HunyuanDit，你可以从[这个](https://huggingface.co/comfyanonymous/hunyuan_dit_comfyui/blob/main/hunyuan_dit_1.2.safetensors)下载它的checkpoint，并把它放在**ComfyUI/models/checkpoints**文件夹中
+4. 或者，因为ComfyUI原生支持HunyuanDit，你可以从[这个](https://huggingface.co/comfyanonymous/hunyuan_dit_comfyui/blob/main/hunyuan_dit_1.2.safetensors)下载它的checkpoint，并把它放在**ComfyUI/models/checkpoints**文件夹中
 
 # Runtime
 1. 输出路径在 **ComfyUI/output/Unique3D/Hunyuan3D-1/**

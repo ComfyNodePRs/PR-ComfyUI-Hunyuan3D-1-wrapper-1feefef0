@@ -89,8 +89,7 @@ Ensure the command **huggingface-cli** is available.
 `huggingface-cli download tencent/Hunyuan3D-1 --local-dir ./weights`  
 and  
 `huggingface-cli download Tencent-Hunyuan/HunyuanDiT-v1.1-Diffusers-Distilled --local-dir ./weights/hunyuanDiT`
-or
-if you prefer to run hunyuanDit natively in ComfyUI, download the checkpoint from [here](https://huggingface.co/comfyanonymous/hunyuan_dit_comfyui/blob/main/hunyuan_dit_1.2.safetensors), put it into your **ComfyUI/models/checkpoints** folder.
+4. or if you prefer to run hunyuanDit natively in ComfyUI, download the checkpoint from [here](https://huggingface.co/comfyanonymous/hunyuan_dit_comfyui/blob/main/hunyuan_dit_1.2.safetensors), put it into your **ComfyUI/models/checkpoints** folder.
 
 # Runtime
 1. Output path is at **ComfyUI/output/Unique3D/Hunyuan3D-1/**
