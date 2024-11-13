@@ -80,7 +80,8 @@ Regardless of which scenario you use, after installing the above dependencies, w
 1. Install **huggingface-cli** using system environment or Conda python:  
 `pip install "huggingface_hub[cli]"`  
 Ensure the command **huggingface-cli** is available.
-2. Run in this node's directory:  
+2. create weights and weights/hunyuanDiT folder.
+3. Run in this node's directory:  
 `huggingface-cli download tencent/Hunyuan3D-1 --local-dir ./weights`  
 and  
 `huggingface-cli download Tencent-Hunyuan/HunyuanDiT-v1.1-Diffusers-Distilled --local-dir ./weights/hunyuanDiT`
