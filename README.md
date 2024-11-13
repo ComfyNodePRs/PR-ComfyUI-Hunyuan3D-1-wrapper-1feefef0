@@ -11,11 +11,7 @@ Please note that this plugin currently doesn't have an easy way to install in Co
 Additionally, the following environments are all based on Windows 10 + CUDA 12.4 + Python 3.12.
 
 ## Scenario 1: ComfyUI Bundle(Python 3.12) + 3D Pack
-If you downloaded ComfyUI from the ComfyUI Release page (current latest version 0.2.7, bundled with Python 3.12) and have successfully installed 3D Pack, congratulations, you only need a few steps:
-1. git clone this repository
-2. pip install -r requirements.txt
-
-Theoretically, if you have successfully installed 3D Pack, this means your Python environment already has special dependency packages like Pytorch3D. For more information, please refer to the 3D Pack page.
+If you downloaded ComfyUI from the ComfyUI Release page (current latest version 0.2.7, bundled with Python 3.12) and have successfully installed 3D Pack, congratulations, you dont need this repo, 3d-pack has its implement already.
 
 ## Scenario 2: ComfyUI Bundle(Python 3.12)
 If you downloaded ComfyUI from the ComfyUI Release page (current latest version 0.2.7, bundled with Python 3.12) but haven't installed 3D Pack, you'll need some additional steps to package related dependencies.
@@ -84,8 +80,7 @@ Regardless of which scenario you use, after installing the above dependencies, w
 1. Install **huggingface-cli** using system environment or Conda python:  
 `pip install "huggingface_hub[cli]"`  
 Ensure the command **huggingface-cli** is available.
-2. Go to this node's folder in ComfyUI, create **weight** folder, and create **hunyuanDiT** folder in the weights folder
-3. Run in this node's directory:  
+2. Run in this node's directory:  
 `huggingface-cli download tencent/Hunyuan3D-1 --local-dir ./weights`  
 and  
 `huggingface-cli download Tencent-Hunyuan/HunyuanDiT-v1.1-Diffusers-Distilled --local-dir ./weights/hunyuanDiT`
