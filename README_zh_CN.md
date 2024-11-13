@@ -80,7 +80,8 @@ Pytorch3D是安装过程中的一大困难，无论是3D Pack还是本节点，�
 1. 使用系统环境或是Conda中的python安装**huggingface-cli**：  
 `pip install "huggingface_hub[cli]"`  
 保证命令**huggingface-cli**是可用的。
-2. 在此节点的目录中运行：  
+2. 创建weights和weights/hunyuanDiT文件夹
+3. 在此节点的目录中运行：  
 `huggingface-cli download tencent/Hunyuan3D-1 --local-dir ./weights`  
 和  
 `huggingface-cli download Tencent-Hunyuan/HunyuanDiT-v1.1-Diffusers-Distilled --local-dir ./weights/hunyuanDiT`  
