@@ -11,11 +11,7 @@
 另外，下述环境均是Windows 10 + CUDA 12.4 + Python 3.12。
 
 ## 情况1，ComfyUI Bundle(Python 3.12) + 3D Pack
-如果你是从ComfyUI的![Release page](https://github.com/comfyanonymous/ComfyUI/releases/tag/v0.2.7)中下载的ComfyUI（当前最新版本0.2.7，绑定的是Python 3.12）的同时也已经成功安装了![3D Pack](https://github.com/MrForExample/ComfyUI-3D-Pack)，那个恭喜你，你只需要几步：
-1. git clone 这个库
-2. pip install -r requirements.txt
-
-因为理论上，如果你3D Pack已经成功安装，这意味，你的Python环境已经有了Pytorch3D等一些特殊的依赖包。更多的信息请参加3D Pack的页面。
+如果你是从ComfyUI的![Release page](https://github.com/comfyanonymous/ComfyUI/releases/tag/v0.2.7)中下载的ComfyUI（当前最新版本0.2.7，绑定的是Python 3.12）的同时也已经成功安装了![3D Pack](https://github.com/MrForExample/ComfyUI-3D-Pack)，那个恭喜你，你不需要安装这个库了，3D pack已经在它里面实现了混元3D。
 
 ## 情况2，ComfyUI Bundle(Python 3.12) 
 如果你是从ComfyUI的Release page中下载的ComfyUI（当前最新版本0.2.7，绑定的是Python 3.12），但是没有安装3D Pack，你需要一些额外的步骤进行相关依赖的打包。
@@ -84,8 +80,7 @@ Pytorch3D是安装过程中的一大困难，无论是3D Pack还是本节点，�
 1. 使用系统环境或是Conda中的python安装**huggingface-cli**：  
 `pip install "huggingface_hub[cli]"`  
 保证命令**huggingface-cli**是可用的。
-2. 进到ComfyUI中该节点的文件夹创建**weight**文件夹，并在weights文件夹中创建**hunyuanDiT**文件夹
-3. 在此节点的目录中运行：  
+2. 在此节点的目录中运行：  
 `huggingface-cli download tencent/Hunyuan3D-1 --local-dir ./weights`  
 和  
 `huggingface-cli download Tencent-Hunyuan/HunyuanDiT-v1.1-Diffusers-Distilled --local-dir ./weights/hunyuanDiT`  
