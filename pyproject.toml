@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-hunyuan3d-1-wrapper"
+description = "ComfyUI Hunyuan3D-1-wrapper is a custom node that allows you to run [a/Tencent/Hunyuan3D-1](https://github.com/Tencent/Hunyuan3D-1) in ComfyUI as a wrapper."
+version = "1.0.0"
+license = {file = "LICENSE"}
+dependencies = ["accelerate", "diffusers", "opencv-python", "imageio", "jaxtyping", "SentencePiece", "trimesh", "rembg[gpu]", "PyMCubes", "xatlas", "libigl", "omegaconf", "matplotlib"]
+
+[project.urls]
+Repository = "https://github.com/jtydhr88/ComfyUI-Hunyuan3D-1-wrapper"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-Hunyuan3D-1-wrapper"
+Icon = ""
